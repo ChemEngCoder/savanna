@@ -22,8 +22,8 @@ It extends these projects with additional features, including:
 A variety of models have been trained and finetuned on Savanna, including:
 * [StripedHyena 7B](https://github.com/togethercomputer/stripedhyena/stargazers): 256 GPUs
 * [Evo 1 7B](https://github.com/evo-design/evo): 256 GPUs
-* [Evo 2 7B](https://github.com/arc-institute/evo2): 256 GPUs, over 2T tokens
-* [Evo 2 40B](https://github.com/arc-institute/evo2): 2048 GPUs, over 9T tokens, 1M context
+* [Evo 2 7B](https://github.com/ArcInstitute/evo2): 256 GPUs, over 2T tokens
+* [Evo 2 40B](https://github.com/ArcInstitute/evo2): 2048 GPUs, over 9T tokens, 1M context
 
 Savanna is a framework developed and maintained by a small team (< 5 people), tailored to the specific needs of the projects above. With careful tuning of the distributed training strategy and architecture, it achieves high MFU on H100s at the thousand-GPU scale. **It is not a production-ready framework, expect rough edges if you don't know what you're doing.** It can serve as a good starting point for research on large-scale training of multi-hybrids. We recommend digging around the training configs for the models above: all the details are there.
 
