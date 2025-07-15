@@ -20,6 +20,7 @@ arrow
 ring_flash_attn
 pydantic<=2.8.2
 numpy<=2.2.6 # to enable the binary mode of np.fromstring
+transformer-engine==1.13.0
 
 # Git repositories
 # git+https://github.com/NVIDIA/TransformerEngine.git@stable
