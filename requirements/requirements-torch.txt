@@ -2,7 +2,7 @@ PyYAML
 causal-conv1d
 deepspeed
 einops
-flash-attn
+flash-attn>=2.1.1,<=2.6.3
 lazy_import_plus
 omegaconf
 opt-einsum
@@ -11,13 +11,16 @@ regex
 requests
 scipy
 sentencepiece
-tokenizers==0.20.1
-torchaudio
-torchvision
+tokenizers>=0.20.1
+torchaudio==2.6.0
+torchvision==0.21.0
 wandb
 boto3
 arrow
 ring_flash_attn
+pydantic<=2.8.2
+numpy<=2.2.6 # to enable the binary mode of np.fromstring
+transformer-engine==1.13.0
 
 # Git repositories
 # git+https://github.com/NVIDIA/TransformerEngine.git@stable
