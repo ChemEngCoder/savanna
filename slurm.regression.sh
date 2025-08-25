@@ -2,11 +2,22 @@
 #SBATCH --job-name=regression_tests
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --gres=gpu:4
+#SBATCH --gpus-per-node=4 # Updated to conform to 
 #SBATCH --output=%x-%j.out  # Default stdout file based on job name and job ID
 #SBATCH --error=%x-%j.err   # Default stderr file based on job name and job ID
 #SBATCH --time=01:00:00
-#SBATCH --partition=gpu_batch
+#SBATCH --partition=gpu_batch # Update for particular cluster
+#SBATCH --export=ALL # Added, propagates env vars for slurm.regression.sh
+
+set -euo pipefail # Added Safety
+
+# --- Optional: site-specific environment setup ---
+# module purge
+# module load cuda/12.1
+# module load python/3.10
+# source /path/to/conda/etc/profile.d/conda.sh
+# conda activate llm-train
+# -----------------------------------------------
 
 echo "LOG_DIR_1: $LOG_DIR_1"
 echo "LOG_DIR_2: $LOG_DIR_2"
