@@ -1,3 +1,4 @@
+PyYAML
 lazy_import_plus
 arrow
 ring_flash_attn
