@@ -1,7 +1,7 @@
-causal-conv1d==1.5.0.post8
-deepspeed==0.16.4
+#causal-conv1d==1.5.0.post8
+#deepspeed==0.16.4
 einops==0.8.1 
-flash-attn==2.5.7 
+#flash-attn==2.5.7 
 #lazy_import_plus # NA
 omegaconf==2.3.0 
 opt-einsum==3.4.0 

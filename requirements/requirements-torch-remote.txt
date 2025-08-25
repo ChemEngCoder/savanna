@@ -1,4 +1,7 @@
 PyYAML
+causal-conv1d
+deepspeed
+flash-attn==2.6.3
 lazy_import_plus
 arrow
 ring_flash_attn
