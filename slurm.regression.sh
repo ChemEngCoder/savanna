@@ -12,11 +12,14 @@ set -euo pipefail # Added Safety
 
 # --- Optional: site-specific environment setup ---
 # module purge
- module load cudacore/.12.2.2
- module load cudnn/8.9.5.29
- module load python/3.12
+module load cudacore/.12.2.2
+module load cudnn/8.9.5.29
+module load python/3.12
 # Activate venv
-.venv/bin/activate
+activate () {
+	. venv/bin/activate
+}
+activate
 # -----------------------------------------------
 
 echo "LOG_DIR_1: $LOG_DIR_1"
