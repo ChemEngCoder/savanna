@@ -97,7 +97,7 @@
    "steps_per_print": 5,
    "keep-last-n-checkpoints": 1,
    "wall_clock_breakdown": false,
-   "save": "/checkpoint/hielab/mpoli/checkpoints/regression/regression_1",
+   "save": "/../scratch/logs/regression/checkpoints/regression/regression_1",
    "tokenizer_type": CharLevelTokenizer,   
    "mlp_type": "short_hyena",
    "use_fp8_linears": true,
@@ -113,7 +113,7 @@
    "lowercase_loss_reweighting": 0.1,
 
    "iteration": 25,
-   "load": "/checkpoint/hielab/mpoli/checkpoints/regression/regression_1",
+   "load": "/../scratch/logs/regression/checkpoints/regression/regression_1",
    "use_checkpoint_lr_scheduler": True,
 }
 
