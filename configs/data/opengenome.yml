@@ -7,5 +7,5 @@
   "checkpoint_validation_with_forward_pass": False,
   "use_wandb": true,
   "wandb_host": "https://api.wandb.ai",
-  "wandb_project": "evo2"
+  "wandb_project": "mbb_test"
 }

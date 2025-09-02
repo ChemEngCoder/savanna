@@ -6,7 +6,6 @@
 #SBATCH --output=%x-%j.out  # Default stdout file based on job name and job ID
 #SBATCH --error=%x-%j.err   # Default stderr file based on job name and job ID
 #SBATCH --time=01:00:00
-#SBATCH --partition=gpu_batch # Update for particular cluster
 #SBATCH --export=ALL # Added, propagates env vars for slurm.regression.sh
 
 set -euo pipefail # Added Safety
