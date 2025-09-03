@@ -2,11 +2,15 @@
 #SBATCH --job-name=regression_tests
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --gpus-per-node=4 # Updated to conform to 
+#SBATCH --gpus-per-node=4
+#SBATCH --mem=30G
 #SBATCH --output=%x-%j.out  # Default stdout file based on job name and job ID
 #SBATCH --error=%x-%j.err   # Default stderr file based on job name and job ID
-#SBATCH --time=01:00:00
+#SBATCH --time=00-04:00 # Time (DD-HH:MM)
 #SBATCH --export=ALL # Added, propagates env vars for slurm.regression.sh
+#SBATCH --mail-user==mark.spahl@mail.utoronto.ca
+#SBATCH --mail-type=ALL
+
 
 set -euo pipefail # Added Safety
 
