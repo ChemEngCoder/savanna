@@ -21,7 +21,7 @@
     ],
   "seq_length": 8192,
   "max_position_embeddings": 8192,
-  "hyena_medium_conv_len": 128,  # default is null
+  "hyena_mr_len": 128,  # default is null
   "log_attn_norms": false,
   "pos_emb": "rotary",
   "rotary_pct": 1,
@@ -100,7 +100,7 @@
    "save": "/../scratch/logs/regression/checkpoints/regression/regression_1", # change this
    "tokenizer_type": CharLevelTokenizer,   
   "mlp_type": "short_hyena",
-   "use_fp8_linears": true,
+   "use_fp8_linears": true, # Depracated in favour of use_fp8_mlp_projections
    "use_fp8_hyena_mlp_input_projections": true,
    "use_fp8_hyena_mlp_output_projections": true,
    "use_fp8_input_projections": true,
@@ -108,7 +108,7 @@
    "master_port": 29502,
    "materialize_attn_mask": false,  # default false, to save memory
   "fast_conv_proj": true,   
-  "hyena_short_conv_len": 7,
+  "hyena_se_len": 7,
   "to_upper": "weighted",
   "lowercase_loss_reweighting": 0.1,  
 
