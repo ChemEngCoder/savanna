@@ -16,10 +16,14 @@ set -euo pipefail # Added Safety
 
 # --- Optional: site-specific environment setup ---
 # module purge
-# module load cuda/12.1
-# module load python/3.10
-# source /path/to/conda/etc/profile.d/conda.sh
-# conda activate llm-train
+module load cudacore/.12.2.2
+module load cudnn/8.9.5.29
+module load python/3.12
+# Activate venv
+activate () {
+	. venv/bin/activate
+}
+activate
 # -----------------------------------------------
 
 echo "LOG_DIR_1: $LOG_DIR_1"

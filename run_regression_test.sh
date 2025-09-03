@@ -69,7 +69,7 @@ update_config() {
     local save_path=$2
     local train_iters=$3
     local log_dir=$4
-    local load_path=$5
+    local load_path="${5-}"
 
     UPDATED_CONFIG="${log_dir}/$(basename $config)"
     cp "$config" "$UPDATED_CONFIG"
