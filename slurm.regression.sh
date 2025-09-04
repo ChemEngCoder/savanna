@@ -2,7 +2,8 @@
 #SBATCH --job-name=regression_tests
 #SBATCH --account=spahlmar
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=12
 #SBATCH --gpus-per-node=h100:4
 #SBATCH --mem=30G
 #SBATCH --output=%x-%j.out  # Default stdout file based on job name and job ID
