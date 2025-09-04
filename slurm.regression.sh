@@ -1,5 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=regression_tests
+#SBATCH 
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --gpus-per-node=4
@@ -15,7 +16,7 @@
 set -euo pipefail # Added Safety
 
 # --- Optional: site-specific environment setup ---
-# module purge
+module purge
 module load cudacore/.12.2.2
 module load cudnn/8.9.5.29
 module load python/3.12
@@ -26,6 +27,9 @@ activate () {
 activate
 # -----------------------------------------------
 
+# Set cudnn path
+CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
+
 echo "LOG_DIR_1: $LOG_DIR_1"
 echo "LOG_DIR_2: $LOG_DIR_2"
 echo "LOG_DIR_3: $LOG_DIR_3"
@@ -34,6 +38,7 @@ echo "CONFIG_2: $CONFIG_2"
 echo "CONFIG_3: $CONFIG_3"
 echo "DATA_CONFIG: $DATA_CONFIG"
 echo "CHECKPOINT_RELOAD_TEST: $CHECKPOINT_RELOAD_TEST"
+echo "CUDNN_PATH: $CUDNN_PATH"
 
 echo "Running first job with config: ${LOG_DIR_1}/$(basename $CONFIG_1)"
 srun --output="${LOG_DIR_1}/slurm-%j.out" --error="${LOG_DIR_1}/slurm-%j.err" \

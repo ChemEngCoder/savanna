@@ -12,7 +12,6 @@ TRAIN_ITERS_1="2000"
 TRAIN_ITERS_2="2000"
 TRAIN_ITERS_3="50"
 CHECKPOINT_RELOAD_TEST=true
-CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
 
 
 TS="$(date +%Y%m%d%H%M)"
@@ -105,6 +104,5 @@ export CONFIG_1="${CONFIG_1}"
 export CONFIG_2="${CONFIG_2}"
 export CONFIG_3="${CONFIG_3}"
 export CHECKPOINT_RELOAD_TEST="${CHECKPOINT_RELOAD_TEST}"
-export CUDNN_PATH
 
 sbatch slurm.regression.sh
