@@ -29,7 +29,7 @@ activate
 # -----------------------------------------------
 
 # Set cudnn path
-CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
+export CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
 
 echo "LOG_DIR_1: $LOG_DIR_1"
 echo "LOG_DIR_2: $LOG_DIR_2"
