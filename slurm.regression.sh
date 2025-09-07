@@ -30,6 +30,8 @@ activate
 
 # Set cudnn path
 export CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
+MASTER_PORT=$((14933 + ${SLURM_ARRAY_TASK_ID:-0}))
+export MASTER_PORT
 
 echo "LOG_DIR_1: $LOG_DIR_1"
 echo "LOG_DIR_2: $LOG_DIR_2"
