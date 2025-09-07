@@ -1,6 +1,5 @@
 #!/bin/bash
 #SBATCH --job-name=regression_tests
-#SBATCH --account=spahlmar
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=12
@@ -30,7 +29,7 @@ activate
 
 # Set cudnn path
 export CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
-MASTER_PORT=$((14933 + ${SLURM_ARRAY_TASK_ID:-0}))
+MASTER_PORT=$((14933 + ${SLURM_JOB_ID:-0}))
 export MASTER_PORT
 
 echo "LOG_DIR_1: $LOG_DIR_1"
@@ -42,6 +41,7 @@ echo "CONFIG_3: $CONFIG_3"
 echo "DATA_CONFIG: $DATA_CONFIG"
 echo "CHECKPOINT_RELOAD_TEST: $CHECKPOINT_RELOAD_TEST"
 echo "CUDNN_PATH: $CUDNN_PATH"
+echo "CUDNN_PATH: $MASTER_PORT"
 
 echo "Running first job with config: ${LOG_DIR_1}/$(basename $CONFIG_1)"
 srun --output="${LOG_DIR_1}/slurm-%j.out" --error="${LOG_DIR_1}/slurm-%j.err" \
