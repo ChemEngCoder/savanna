@@ -48,7 +48,7 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 try:
     s.bind(("", p))
     s.close()
-    print(p)           # success -> print the usable port
+    sys.exit(0)   # success
 except OSError:
     sys.exit(1)        # in use -> nonzero exit to loop again
 PY
