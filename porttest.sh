@@ -12,7 +12,7 @@ choose_port() {
       [ $p -ge 65000 ] && { echo "No free port found" >&2; return 1; }
     done
     echo "$p"
-  }
-  MASTER_PORT=$(choose_port "$CANDIDATE") || exit 1
-
-  export MASTER_PORT
+}
+MASTER_PORT=$(choose_port "$CANDIDATE") || exit 1
+echo "MASTER_PORT: $MASTER_PORT"
+export MASTER_PORT
