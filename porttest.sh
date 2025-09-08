@@ -43,4 +43,4 @@ PY
 MASTER_PORT_1=$(choose_port "$CANDIDATE") || exit 1
 MASTER_PORT_2=$(choose_port_2 "$CANDIDATE") || exit 1
 echo "MASTER_PORT_1: $MASTER_PORT_1"
-echo "MASTER_PORT_1: $MASTER_PORT_2"
+echo "MASTER_PORT_2: $MASTER_PORT_2"
