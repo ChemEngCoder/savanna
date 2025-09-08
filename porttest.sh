@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#SBATCH --time=00:02:00
 # Deterministic base (avoids clashes across users) + check availability on rank-0
 BASE=15000
 SPAN=20000
