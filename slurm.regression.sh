@@ -29,7 +29,21 @@ activate
 
 # Set cudnn path
 export CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
-MASTER_PORT=$((14933 + ${SLURM_JOB_ID:-0}))
+
+# Deterministic base for MASTER_PORT (avoids clashes across users) + check availability on rank-0
+BASE=15000
+SPAN=20000
+CANDIDATE=$((BASE + (SLURM_JOB_ID % SPAN)))
+
+choose_port() {
+    local p="$1"
+    while ss -lnt 2>/dev/null | awk '{print $4}' | grep -q ":$p$"; do
+      p=$((p+1))
+      [ $p -ge 65000 ] && { echo "No free port found" >&2; return 1; }
+    done
+    echo "$p"
+}
+MASTER_PORT=$(choose_port "$CANDIDATE") || exit 1
 export MASTER_PORT
 
 echo "LOG_DIR_1: $LOG_DIR_1"
@@ -41,7 +55,7 @@ echo "CONFIG_3: $CONFIG_3"
 echo "DATA_CONFIG: $DATA_CONFIG"
 echo "CHECKPOINT_RELOAD_TEST: $CHECKPOINT_RELOAD_TEST"
 echo "CUDNN_PATH: $CUDNN_PATH"
-echo "CUDNN_PATH: $MASTER_PORT"
+echo "MASTER_PORT: $MASTER_PORT"
 
 echo "Running first job with config: ${LOG_DIR_1}/$(basename $CONFIG_1)"
 srun --output="${LOG_DIR_1}/slurm-%j.out" --error="${LOG_DIR_1}/slurm-%j.err" \
