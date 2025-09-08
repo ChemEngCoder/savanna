@@ -13,6 +13,34 @@ choose_port() {
     done
     echo "$p"
 }
-MASTER_PORT=$(choose_port "$CANDIDATE") || exit 1
-echo "MASTER_PORT: $MASTER_PORT"
-export MASTER_PORT
+
+choose_port_2() {
+  # try to bind the candidate port; if busy, increment until free
+  local p="${1:-29500}"
+  while true; do
+    # Try to bind using Python (immediately closes on success)
+    python - <<'PY' "$p"
+import socket, sys
+p = int(sys.argv[1])
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+try:
+    s.bind(("", p))
+    s.close()
+    print(p)           # success -> print the usable port
+except OSError:
+    sys.exit(1)        # in use -> nonzero exit to loop again
+PY
+    if [ $? -eq 0 ]; then
+      echo "$p"
+      return 0
+    fi
+    p=$((p+1))
+    [ $p -ge 65000 ] && { echo "No free port found" >&2; return 1; }
+  done
+}
+
+MASTER_PORT_1=$(choose_port "$CANDIDATE") || exit 1
+MASTER_PORT_2=$(choose_port_2 "$CANDIDATE") || exit 1
+echo "MASTER_PORT_1: $MASTER_PORT_1"
+echo "MASTER_PORT_1: $MASTER_PORT_2"
