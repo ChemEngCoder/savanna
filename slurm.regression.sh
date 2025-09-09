@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=regression_tests
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=4
+#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=12
 #SBATCH --gpus-per-node=h100:4
 #SBATCH --mem=30G
