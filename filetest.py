@@ -8,7 +8,7 @@ from savanna.data.indexed_dataset import make_dataset as make_indexed_dataset
 
 path = join("data", "evo", "pretraining_or_both", "gtdb_v220_imgpr")
 print(path)
-path = "/data/evo/pretraining_or_both/gtdb_v220_imgpr/"
+path = "data/evo/pretraining_or_both/gtdb_v220_imgpr/"
 print(path)
 files = [f for f in listdir(path)]
 print(files)
