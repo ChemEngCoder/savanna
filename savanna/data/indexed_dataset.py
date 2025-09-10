@@ -111,7 +111,8 @@ def code(dtype):
 
 
 def index_file_path(prefix_path):
-    print(f"PRINGTING PATH: {prefix_path}")
+    print(f"PRINTING PATH: {prefix_path}")
+    print(os.getcwd())
     return prefix_path + ".idx"
 
 
