@@ -8,12 +8,12 @@ from savanna.data.indexed_dataset import make_dataset as make_indexed_dataset
 
 path = join("data", "evo", "pretraining_or_both", "gtdb_v220_imgpr")
 print(path)
-path = "data/evo/pretraining_or_both/gtdb_v220_imgpr/"
+path = "/scratch/savanna/data/evo/pretraining_or_both/gtdb_v220_imgpr/"
 print(path)
 files = [f for f in listdir(path)]
 print(files)
 
-train_path = "data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_train_chunk1_text_CharLevelTokenizer_document"
+train_path = "/scratch/savanna/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_train_chunk1_text_CharLevelTokenizer_document"
 test_path = "data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_test_chunk1_text_CharLevelTokenizer_document"
 valid_path = "data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_valid_chunk1_text_CharLevelTokenizer_document"
 
