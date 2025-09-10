@@ -113,6 +113,7 @@ def code(dtype):
 def index_file_path(prefix_path):
     print(f"PRINTING PATH: {prefix_path}")
     print(os.getcwd())
+    print(os.listdir(prefix_path))
     return prefix_path + ".idx"
 
 

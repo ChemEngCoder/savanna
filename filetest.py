@@ -10,7 +10,7 @@ path = join("data", "evo", "pretraining_or_both", "gtdb_v220_imgpr")
 files = [f for f in listdir(path)]
 print(files)
 
-train_path = "scratch/savanna/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_train_chunk1_text_CharLevelTokenizer_document"
+train_path = "/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_train_chunk1_text_CharLevelTokenizer_document"
 test_path = "/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_test_chunk1_text_CharLevelTokenizer_document"
 valid_path = "/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_valid_chunk1_text_CharLevelTokenizer_document"
 
