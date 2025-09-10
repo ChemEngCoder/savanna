@@ -63,10 +63,10 @@ test_weights, test_num_samples = get_normalized_weights_and_num_samples(
 )
 
 train_dataset = build_the_dataset(
-                    data_prefix=test_path,
-                    name=f"test_{i}",
+                    data_prefix=train_path,
+                    name=f"train_{i}",
                     data_impl="mmap",
-                    num_samples=test_num_samples[i],
+                    num_samples=train_num_samples[i],
                     seq_length=seq_length,
                     seed=seed,
                     skip_warmup=(not mmap_warmup),
