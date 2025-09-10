@@ -14,7 +14,7 @@ train_path = "/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_train_chun
 test_path = "/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_test_chunk1_text_CharLevelTokenizer_document"
 valid_path = "/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_valid_chunk1_text_CharLevelTokenizer_document"
 
-i = 1
+i = 0
 
 train_iters = 2000
 eval_interval = 100
@@ -63,10 +63,10 @@ test_weights, test_num_samples = get_normalized_weights_and_num_samples(
 )
 
 train_dataset = build_the_dataset(
-                    data_prefix=train_path,
-                    name=f"train_{i}",
+                    data_prefix=test_path,
+                    name=f"test_{i}",
                     data_impl="mmap",
-                    num_samples=train_num_samples[i],
+                    num_samples=test_num_samples[i],
                     seq_length=seq_length,
                     seed=seed,
                     skip_warmup=(not mmap_warmup),
