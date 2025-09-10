@@ -27,7 +27,7 @@ grad_acc = 1 #gradient_accumulation_steps
 
 #dp_world_size
 global_num_gpus = 4
-pp_size = 0 #pipe_parallel_size
+pp_size = 1 #pipe_parallel_size
 mp_size = 1 #model_parallel_size
 cp_size = 1#context_parallel_size
 dp_world_size = (global_num_gpus / pp_size) / (mp_size * cp_size)
