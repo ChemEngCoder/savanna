@@ -114,7 +114,7 @@ def index_file_path(prefix_path):
     print(f"PRINTING PATH: {prefix_path}")
     print(os.getcwd())
     print("listdir___")
-    print(os.listdir(prefix_path))
+    print(os.path.exists(prefix_path + '.idx'))
     print("_________")
     return prefix_path + ".idx"
 
