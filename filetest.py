@@ -6,7 +6,7 @@ import numpy as np
 from savanna.data.data_utils import build_the_dataset, get_normalized_weights_and_num_samples
 from savanna.data.indexed_dataset import make_dataset as make_indexed_dataset
 
-path = join("..", "scratch", "evo", "pretraining_or_both", "gtdb_v220_imgpr")
+path = join("data", "evo", "pretraining_or_both", "gtdb_v220_imgpr")
 files = [f for f in listdir(path)]
 print(files)
 
