@@ -1,7 +1,7 @@
 {
-  "train-data-paths": ["/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_train_chunk1_text_CharLevelTokenizer_document"],
-  "test-data-paths": ["/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_test_chunk1_text_CharLevelTokenizer_document"],
-  "valid-data-paths": ["/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_valid_chunk1_text_CharLevelTokenizer_document"],
+  "train-data-paths": ["/scratch/spahlmar/savanna/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_train_chunk1_text_CharLevelTokenizer_document"],
+  "test-data-paths": ["/scratch/spahlmar/savanna/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_test_chunk1_text_CharLevelTokenizer_document"],
+  "valid-data-paths": ["/scratch/spahlmar/savanna/data/evo/pretraining_or_both/gtdb_v220_imgpr/data_gtdb_valid_chunk1_text_CharLevelTokenizer_document"],
   "test-data-weights": [1.],
   "valid-data-weights": [1.],
   "checkpoint_validation_with_forward_pass": False,
