@@ -1,5 +1,5 @@
 PyYAML
-causal-conv1d
+#causal-conv1d
 deepspeed
 lazy_import_plus
 arrow
