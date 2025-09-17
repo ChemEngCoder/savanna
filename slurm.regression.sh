@@ -17,8 +17,9 @@ set -euo pipefail # Added Safety
 
 # --- Optional: site-specific environment setup ---
 module purge
-module load cudacore/.12.2.2
-module load cudnn/8.9.5.29
+module load cudacore/.12.6.2
+module load cudnn/9.5.1.17
+module load nccl/2.26.2 
 module load python/3.12
 # Activate venv
 activate () {
