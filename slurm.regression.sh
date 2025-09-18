@@ -29,7 +29,7 @@ activate
 # -----------------------------------------------
 
 # Set cudnn path
-export CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
+export CUDNN_PATH="$(dirname "$EBROOTCUDNN")/9.5.1.17"
 
 # Deterministic base for MASTER_PORT (avoids clashes across users) + check availability on rank-0
 BASE=15000
