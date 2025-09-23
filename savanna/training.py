@@ -1390,7 +1390,7 @@ def setup_model_and_optimizer(global_config, use_cache=False, iteration=None):
 
 def backward_step(global_config, timers, optimizer, model, loss):
     """Backward step."""
-
+    print("BACKWARD STEP")
     # Backward pass.
     timers("backward-backward").start()
     if global_config.deepspeed:
