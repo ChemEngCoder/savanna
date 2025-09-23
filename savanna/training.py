@@ -949,7 +949,7 @@ def forward_step(data_iterator, model, global_config, timers, return_logits=Fals
 
     if timers is not None:
         timers("batch generator").stop()
-
+    print("FORWARD STEP")
     with hsd_timer:
         outputs = model((tokens, position_ids, attention_mask), global_config=global_config)
    

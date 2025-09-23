@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=12
-#SBATCH --gpus-per-node=h100:4
+#SBATCH --gpus-per-node=h100:1
 #SBATCH --mem=30G
 #SBATCH --output=%x-%j.out  # Default stdout file based on job name and job ID
 #SBATCH --error=%x-%j.err   # Default stderr file based on job name and job ID
@@ -17,8 +17,9 @@ set -euo pipefail # Added Safety
 
 # --- Optional: site-specific environment setup ---
 module purge
-module load cudacore/.12.2.2
-module load cudnn/8.9.5.29
+module load cudacore/.12.6.2
+module load cudnn/9.5.1.17
+module load nccl/2.26.2 
 module load python/3.12
 # Activate venv
 activate () {
@@ -28,7 +29,7 @@ activate
 # -----------------------------------------------
 
 # Set cudnn path
-export CUDNN_PATH="$(dirname "$EBROOTCUDNN")"
+export CUDNN_PATH="$(dirname "$EBROOTCUDNN")/9.5.1.17"
 
 # Deterministic base for MASTER_PORT (avoids clashes across users) + check availability on rank-0
 BASE=15000
