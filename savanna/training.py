@@ -1434,6 +1434,9 @@ def train_step(
         for _ in range(global_config.gradient_accumulation_steps):
             # Forward model for one step.
             
+            if hasattr(torch.compiler, "cudagraph_mark_step_begin"):
+                torch.compiler.cudagraph_mark_step_begin()
+
             if straggler is not None:
                 straggler_ctx = straggler.Detector.detection_section("TRAIN_STEP_FORWARD", profile_cuda=True)
                 # print("Entering straggler.Detector context: TRAIN_STEP_FORWARD")
