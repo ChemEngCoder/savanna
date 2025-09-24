@@ -1517,14 +1517,14 @@ def train_step(
             if straggler is not None:
                 straggler_ctx.__exit__(None, None, None)
 
-        reduced_loss = {
-            "lm_loss": reduce_losses(losses).mean(),
-        }  # reduces losses across machines for logging
+        #reduced_loss = {
+        #    "lm_loss": reduce_losses(losses).mean(),
+        #}  # reduces losses across machines for logging
 
         # Approach 2: Updated reduce_losses:
         # After the micro-steps:
-        #reduced_loss_vec = reduce_losses_break_graphs(losses)  # 1D tensor length = grad_accum_steps
-        #reduced_loss = {"lm_loss": reduced_loss_vec.mean()}  # or keep the vector if you log each
+        reduced_loss_vec = reduce_losses_break_graphs(losses)  # 1D tensor length = grad_accum_steps
+        reduced_loss = {"lm_loss": reduced_loss_vec.mean()}  # or keep the vector if you log each
 
     if global_config.precision == "fp16" and model.optimizer.overflow:
         skipped_iter = 1
