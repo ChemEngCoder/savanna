@@ -22,6 +22,7 @@ from collections import deque
 
 import deepspeed.launcher.runner as runner
 import torch
+import torch.distributed as dist
 
 from savanna import print_rank_0
 from savanna.scaling.critical_batch import CriticalBatchEstimator
