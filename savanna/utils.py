@@ -51,6 +51,34 @@ def reduce_losses(losses):
     reduced_losses = reduced_losses / torch.distributed.get_world_size()
     return reduced_losses
 
+def reduce_losses_break_graphs(losses, *, device=None, dtype=torch.float32):
+    """
+    Reduce a vector of scalar losses across all ranks.
+
+    losses: iterable of floats or tensors (we'll read them as floats).
+    returns: 1D CUDA tensor of per-microstep means reduced across ranks.
+    """
+    # 1) Read everything as plain Python floats (break any graph ties)
+    vals = []
+    for x in losses:
+        if torch.is_tensor(x):
+            # detach->cpu->float() ensures no aliasing with graphed storage
+            vals.append(float(x.detach().cpu()))
+        else:
+            vals.append(float(x))
+
+    # 2) Create a fresh tensor for distributed reduction
+    if device is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+    t = torch.tensor(vals, device=device, dtype=dtype)
+
+    # 3) All-reduce (SUM) then average by world size
+    if dist.is_initialized():
+        dist.all_reduce(t, op=dist.ReduceOp.SUM)
+        t /= dist.get_world_size()
+
+    return t
+
 
 def report_memory(name):
     """Simple GPU memory report."""

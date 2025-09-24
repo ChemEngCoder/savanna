@@ -72,6 +72,7 @@ from savanna.utils import (
     mask_control_tags,
     print_straggler_report,
     reduce_losses,
+    reduce_losses_break_graphs,
 )
 
 logger = logging.getLogger(__name__)
@@ -1434,9 +1435,10 @@ def train_step(
         for _ in range(global_config.gradient_accumulation_steps):
             # Forward model for one step.
             
+            # Temporarily disabling Cuda-Graphs
             if hasattr(torch.compiler, "cudagraph_mark_step_begin"):
                 torch.compiler.cudagraph_mark_step_begin()
-
+            
             if straggler is not None:
                 straggler_ctx = straggler.Detector.detection_section("TRAIN_STEP_FORWARD", profile_cuda=True)
                 # print("Entering straggler.Detector context: TRAIN_STEP_FORWARD")
@@ -1458,7 +1460,14 @@ def train_step(
 
             timers("forward").stop()
 
-            losses.append(loss)
+            #Approach 0:
+            #losses.append(loss)
+            
+            # Approach 1: After backward (do NOT store the graphed tensor itself):
+            losses.append(float(loss.detach()))
+            del loss   # drop the reference
+
+            # Approach 2:
 
             if straggler is not None:
                 straggler_ctx.__exit__(None, None, None)
@@ -1508,6 +1517,11 @@ def train_step(
         reduced_loss = {
             "lm_loss": reduce_losses(losses).mean(),
         }  # reduces losses across machines for logging
+
+        # Approach 2: Updated reduce_losses:
+        # After the micro-steps:
+        #reduced_loss_vec = reduce_losses_break_graphs(losses)  # 1D tensor length = grad_accum_steps
+        #reduced_loss = {"lm_loss": reduced_loss_vec.mean()}  # or keep the vector if you log each
 
     if global_config.precision == "fp16" and model.optimizer.overflow:
         skipped_iter = 1
