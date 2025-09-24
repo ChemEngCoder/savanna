@@ -1462,12 +1462,8 @@ def train_step(
 
             #Approach 0:
             #losses.append(loss)
-            
-            # Approach 1: After backward (do NOT store the graphed tensor itself):
-            losses.append(float(loss.detach()))
-            del loss   # drop the reference
+        
 
-            # Approach 2:
 
             if straggler is not None:
                 straggler_ctx.__exit__(None, None, None)
@@ -1489,6 +1485,13 @@ def train_step(
                     loss=loss,
                 )
             
+            #Approach 3: Move losses.append(loss)
+            losses.append(loss)
+        
+            # Approach 1: After backward (do NOT store the graphed tensor itself):
+            #losses.append(float(loss.detach()))
+            #del loss   # drop the reference
+
             if straggler is not None:
                 straggler_ctx.__exit__(None, None, None)
 
