@@ -1437,6 +1437,7 @@ def train_step(
             
             # Temporarily disabling Cuda-Graphs
             if hasattr(torch.compiler, "cudagraph_mark_step_begin"):
+                print("Mark Step Begin")
                 torch.compiler.cudagraph_mark_step_begin()
             
             if straggler is not None:
