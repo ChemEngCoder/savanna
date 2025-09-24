@@ -1407,6 +1407,10 @@ def backward_step(global_config, timers, optimizer, model, loss):
     else:
         raise ValueError("Must be using deepspeed to run neox")
 
+def _mark_step():
+    if hasattr(torch.compiler, "cudagraph_mark_step_begin"):
+        print("Mark Step Begin")
+        torch.compiler.cudagraph_mark_step_begin()
 
 def train_step(
     global_config,
@@ -1436,9 +1440,7 @@ def train_step(
             # Forward model for one step.
             
             # Temporarily disabling Cuda-Graphs
-            if hasattr(torch.compiler, "cudagraph_mark_step_begin"):
-                print("Mark Step Begin")
-                torch.compiler.cudagraph_mark_step_begin()
+            _mark_step()
             
             if straggler is not None:
                 straggler_ctx = straggler.Detector.detection_section("TRAIN_STEP_FORWARD", profile_cuda=True)
@@ -1475,7 +1477,10 @@ def train_step(
                 straggler_ctx = straggler.Detector.detection_section("TRAIN_STEP_BACKWARD", profile_cuda=True)
                 # print("Entering straggler.Detector context: TRAIN_STEP_FORWARD")
                 straggler_ctx.__enter__()
-                
+            
+            # Temporarily disabling Cuda-Graphs
+            _mark_step()
+
             timers("backward").start()
             with profiler.mark("TRAIN_STEP_BACKWARD"):
                 backward_step(
@@ -1507,6 +1512,9 @@ def train_step(
                 straggler_ctx = straggler.Detector.detection_section("TRAIN_STEP_OPTIMIZER", profile_cuda=True)
                 # print("Entering straggler.Detector context: TRAIN_STEP_FORWARD")
                 straggler_ctx.__enter__()
+
+            # Temporarily disabling Cuda-Graphs
+            _mark_step()
 
             timers("optimizer").start()
             with profiler.mark("TRAIN_STEP_OPTIMIZER_STEP"):
