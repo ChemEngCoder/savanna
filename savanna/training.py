@@ -83,7 +83,8 @@ straggler = None
 real_empty_cache = torch.cuda.empty_cache
 torch.cuda.empty_cache = lambda: None
 RealEvent = torch.cuda.Event
-
+# Turn CUDAGraphs off 
+torch._inductor.config.cuda.use_cuda_graphs = False
 
 class RecycleableEvent:
     events = set()
