@@ -88,6 +88,13 @@ RealEvent = torch.cuda.Event
 torch._inductor.config.triton.cudagraphs = False
 torch._inductor.config.triton.cudagraph_skip_dynamic_graphs = True
 
+# Sanity check
+import pprint
+print(torch.__version__)
+pprint.pp(dir(torch._inductor.config))
+pprint.pp(dir(torch._inductor.config.triton))
+print("triton.cudagraphs =", torch._inductor.config.triton.cudagraphs)
+
 class RecycleableEvent:
     events = set()
 
