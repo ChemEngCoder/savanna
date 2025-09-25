@@ -84,7 +84,9 @@ real_empty_cache = torch.cuda.empty_cache
 torch.cuda.empty_cache = lambda: None
 RealEvent = torch.cuda.Event
 # Turn CUDAGraphs off 
-torch._inductor.config.cuda.use_cuda_graphs = False
+#torch._inductor.config.cuda.use_cuda_graphs = False
+torch._inductor.config.triton.cudagraphs = False
+torch._inductor.config.triton.cudagraph_skip_dynamic_graphs = True
 
 class RecycleableEvent:
     events = set()
