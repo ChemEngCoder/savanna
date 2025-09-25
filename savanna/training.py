@@ -1682,7 +1682,10 @@ def train(
     if global_config.disable_gc:
         print(f"rank{torch.distributed.get_rank()}: Disabling automatic gc, collection generation {global_config.gc_collect_generation}")
         gc.disable()
-        
+
+    # Re-import torch before training steps:
+    import torch
+
     while iteration < global_config.train_iters:
         
         if global_config.disable_gc:
@@ -1698,7 +1701,7 @@ def train(
             enable_deepspeed_comms_logging()
             if torch.distributed.get_rank() == 0:
                 print(f"Comms logging enabled at iteration {iteration}")
-
+    
         loss_dict, skipped_iter = train_step(
             global_config=global_config,
             timers=timers,
