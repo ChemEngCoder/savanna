@@ -1399,7 +1399,7 @@ def setup_model_and_optimizer(global_config, use_cache=False, iteration=None):
 
     return model, optimizer, lr_scheduler
 
-
+@torch.compiler.disable
 def backward_step(global_config, timers, optimizer, model, loss):
     """Backward step."""
     print("BACKWARD STEP")
@@ -1422,6 +1422,10 @@ def _mark_step():
     if hasattr(torch.compiler, "cudagraph_mark_step_begin"):
         print("Mark Step Begin")
         torch.compiler.cudagraph_mark_step_begin()
+
+@torch.compiler.disable
+def optimizer_step(model):
+    model.step()
 
 def train_step(
     global_config,
@@ -1530,7 +1534,7 @@ def train_step(
             timers("optimizer").start()
             with profiler.mark("TRAIN_STEP_OPTIMIZER_STEP"):
                 if global_config.deepspeed:
-                    model.step()
+                    optimizer_step(model)
                 else:
                     raise ValueError("Must be using deepspeed to run savanna")
             timers("optimizer").stop()
@@ -1684,7 +1688,7 @@ def train(
         gc.disable()
 
     # Re-import torch before training steps:
-    import torch
+    #import torch
 
     while iteration < global_config.train_iters:
         
