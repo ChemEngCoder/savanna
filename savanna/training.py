@@ -1348,7 +1348,8 @@ def setup_model_and_optimizer(global_config, use_cache=False, iteration=None):
         )
         model.total_params = get_total_params(model.module)
         print_rank_0(f' > total params: {"{:,}".format(model.total_params)}')
-
+        # Forward-only compile
+        model = torch.compile(model)
         mark_norms_for_sequence_parallel_grad_sync(model, global_config)
 
         if global_config.is_pipe_parallel:
