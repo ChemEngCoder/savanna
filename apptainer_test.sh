@@ -19,6 +19,9 @@ apptainer exec --nv \
 
     export LD_LIBRARY_PATH="$VIRTUAL_ENV/python3.12/site-packages/torch/lib:${LD_LIBRARY_PATH}"
 
+    # ★ (optional but helpful) strip any python3.10 torch/lib dirs that might be ahead
+    LD_LIBRARY_PATH=$(echo "$LD_LIBRARY_PATH" | tr ":" "\n" | grep -v "python3\.10/.*/torch/lib" | paste -sd: -)
+    export LD_LIBRARY_PATH
 
     echo $CUDA_HOME
     echo $CUDNN_PATH
