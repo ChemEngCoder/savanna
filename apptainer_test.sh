@@ -25,3 +25,4 @@ apptainer exec --nv \
     nvcc --version
     python --version
     python torchtest.py
+'
