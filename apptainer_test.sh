@@ -18,7 +18,7 @@ apptainer exec --nv --cleanenv \
     export PYTHONNOUSERSITE=1
 
     # 2) compute venv site-packages and torch/lib WITHOUT importing torch
-    VENV_SITE=$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')
+    VENV_SITE=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
     TORCH_LIB="${VENV_SITE}/torch/lib"
 
     # 3) locate CUDA + MPI runtime dirs (best-effort, adjust as needed)
