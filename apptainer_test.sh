@@ -19,12 +19,7 @@ apptainer exec --nv --cleanenv \
 
 
     # Discover the venv’s site-packages robustly (no torch import needed)
-    VENV_PURELIB=$(
-    python - <<'PY'
-    import sysconfig
-    print(sysconfig.get_path('purelib'))
-    PY
-    )
+    VENV_PURELIB=$(python -c '\''import sysconfig; print(sysconfig.get_path("purelib"))'\'')
     TORCH_LIB="${VENV_PURELIB}/torch/lib"
 
     # Sanity: should exist and contain libtorch_python.so
