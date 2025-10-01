@@ -21,6 +21,7 @@ apptainer exec --nv --cleanenv \
     VENV_SITE=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
       # ★ put the venv’s Torch .so directory FIRST for the dynamic linker
     TORCH_LIB="$VIRTUAL_ENV/lib/python3.12/site-packages/torch/lib"
+    echo $TORCH_LIB
 
     # 3) locate CUDA + MPI runtime dirs (best-effort, adjust as needed)
     CUDA_LIB="${CUDA_HOME:-/usr/local/cuda}/lib64"
