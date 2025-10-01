@@ -46,7 +46,7 @@ apptainer exec --nv --cleanenv \
     echo "$LD_LIBRARY_PATH" | tr ':' '\n' | head -n 5
 
     ls "$VIRTUAL_ENV/python3.12/site-packages/torch/lib"
-    ls usr/local/lib/python3.10/dist-packages/torch/lib
+    ls /usr/local/lib/python3.10/dist-packages/torch/lib
     echo $CUDA_HOME
     echo $CUDNN_PATH
     nvcc --version
