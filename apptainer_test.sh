@@ -23,7 +23,7 @@ apptainer exec --nv \
     LD_LIBRARY_PATH=$(echo "$LD_LIBRARY_PATH" | tr ":" "\n" | grep -v "python3\.10/.*/torch/lib" | paste -sd: -)
     export LD_LIBRARY_PATH
 
-    ls venv/lib/python3.12/site-packages/torch/lib
+    ls "$VIRTUAL_ENV/python3.12/site-packages/torch/lib"
 
     echo $CUDA_HOME
     echo $CUDNN_PATH
