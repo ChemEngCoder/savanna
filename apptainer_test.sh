@@ -18,7 +18,6 @@ apptainer exec --nv --cleanenv \
     export PYTHONNOUSERSITE=1
 
     # 2) compute venv site-packages and torch/lib WITHOUT importing torch
-    #VENV_SITE=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
     # ★ put the venv’s Torch .so directory FIRST for the dynamic linker
     TORCH_LIB="$VIRTUAL_ENV/lib/python3.12/site-packages/torch/lib"
     echo $TORCH_LIB
@@ -38,15 +37,16 @@ apptainer exec --nv --cleanenv \
     [ -n "$OMPI_LIBDIR" ] && LD_NEW="${LD_NEW:+$LD_NEW:}$OMPI_LIBDIR"
 
     # 5) optionally append any existing entries after filtering out stale torch paths
-    #LD_OLD_FILTERED=$(echo "${LD_LIBRARY_PATH:-}" | tr ':' '\n' | \
-    #grep -vE "python3\.10/.*/torch(_tensorrt)?/lib" | paste -sd: -)
-    #export LD_LIBRARY_PATH="${LD_NEW}${LD_OLD_FILTERED:+:$LD_OLD_FILTERED}"
+    LD_OLD_FILTERED=$(echo "${LD_LIBRARY_PATH:-}" | tr ':' '\n' | \
+    grep -vE "python3\.10/.*/torch(_tensorrt)?/lib" | paste -sd: -)
+    export LD_LIBRARY_PATH="${LD_NEW}${LD_OLD_FILTERED:+:$LD_OLD_FILTERED}"
 
     # (optional) quick print
     echo "LD_LIBRARY_PATH head:"
     echo "$LD_LIBRARY_PATH" | tr ':' '\n' | head -n 5
 
     ls "$VIRTUAL_ENV/python3.12/site-packages/torch/lib"
+    ls usr/local/lib/python3.10/dist-packages/torch/lib
     echo $CUDA_HOME
     echo $CUDNN_PATH
     nvcc --version
