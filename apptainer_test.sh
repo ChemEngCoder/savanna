@@ -32,7 +32,7 @@ apptainer exec --nv --cleanenv \
 
     # 4) build a minimal LD_LIBRARY_PATH (left-to-right search order)
     LD_NEW=""
-    [ -d "$TORCH_LIB" ] && LD_NEW="${LD_NEW:+LD_NEW:}$TORCH_LIB"
+    [ -d "$TORCH_LIB" ] && LD_NEW="${LD_NEW:+$LD_NEW:}$TORCH_LIB"
     [ -d "$CUDA_LIB"  ] && LD_NEW="${LD_NEW:+$LD_NEW:}$CUDA_LIB"
     [ -n "$OMPI_LIBDIR" ] && LD_NEW="${LD_NEW:+$LD_NEW:}$OMPI_LIBDIR"
 
