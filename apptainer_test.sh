@@ -5,7 +5,7 @@ export CONTAINER="../pytorch_24.09-py3.12-mpi.sif"
 
 module load openmpi/4.1.5
 
-apptainer exec --nv \
+apptainer exec --nv --cleanenv \
   --bind $SCRATCH:$SCRATCH \
   $CONTAINER bash -lc '
 
@@ -24,6 +24,8 @@ apptainer exec --nv \
     export LD_LIBRARY_PATH
 
     ls "$VIRTUAL_ENV/python3.12/site-packages/torch/lib"
+
+    [ -d "$TORCH_LIB" ] && ls -1 "$TORCH_LIB" | head
 
     echo $CUDA_HOME
     echo $CUDNN_PATH
