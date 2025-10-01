@@ -17,16 +17,34 @@ apptainer exec --nv --cleanenv \
     unset PYTHONPATH
     export PYTHONNOUSERSITE=1
 
-    export LD_LIBRARY_PATH="$VIRTUAL_ENV/python3.12/site-packages/torch/lib:${LD_LIBRARY_PATH}"
+    # 2) compute venv site-packages and torch/lib WITHOUT importing torch
+    VENV_SITE=$(python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')
+    TORCH_LIB="${VENV_SITE}/torch/lib"
 
-    # ★ (optional but helpful) strip any python3.10 torch/lib dirs that might be ahead
-    LD_LIBRARY_PATH=$(echo "$LD_LIBRARY_PATH" | tr ":" "\n" | grep -v "python3\.10/.*/torch/lib" | paste -sd: -)
-    export LD_LIBRARY_PATH
+    # 3) locate CUDA + MPI runtime dirs (best-effort, adjust as needed)
+    CUDA_LIB="${CUDA_HOME:-/usr/local/cuda}/lib64"
+    # OpenMPI example; fall back to common prefixes if ompi_info is unavailable
+    OMPI_LIBDIR=$( (ompi_info --path libdir 2>/dev/null | awk "{print \$2}") || echo "" )
+    [ -z "$OMPI_LIBDIR" ] && for d in /usr/lib/x86_64-linux-gnu /usr/lib /opt/openmpi*/lib; do
+    [ -e "$d/libmpi.so" ] && OMPI_LIBDIR="$d" && break
+    done
+
+    # 4) build a minimal LD_LIBRARY_PATH (left-to-right search order)
+    LD_NEW=""
+    [ -d "$TORCH_LIB" ] && LD_NEW="$TORCH_LIB"
+    [ -d "$CUDA_LIB"  ] && LD_NEW="${LD_NEW:+$LD_NEW:}$CUDA_LIB"
+    [ -n "$OMPI_LIBDIR" ] && LD_NEW="${LD_NEW:+$LD_NEW:}$OMPI_LIBDIR"
+
+    # 5) optionally append any existing entries after filtering out stale torch paths
+    LD_OLD_FILTERED=$(echo "${LD_LIBRARY_PATH:-}" | tr ':' '\n' | \
+    grep -vE 'python3\.10/.*/torch(_tensorrt)?/lib' | paste -sd: -)
+    export LD_LIBRARY_PATH="${LD_NEW}${LD_OLD_FILTERED:+:$LD_OLD_FILTERED}"
+
+    # (optional) quick print
+    echo "LD_LIBRARY_PATH head:"
+    echo "$LD_LIBRARY_PATH" | tr ':' '\n' | head -n 5
 
     ls "$VIRTUAL_ENV/python3.12/site-packages/torch/lib"
-
-    [ -d "$TORCH_LIB" ] && ls -1 "$TORCH_LIB" | head
-
     echo $CUDA_HOME
     echo $CUDNN_PATH
     nvcc --version
