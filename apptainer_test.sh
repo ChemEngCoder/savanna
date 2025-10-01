@@ -36,7 +36,7 @@ apptainer exec --nv --cleanenv \
 
     # Append any existing entries, but drop stale py3.10 torch paths
     LD_OLD_FILTERED=$(echo "${LD_LIBRARY_PATH:-}" | tr ':' '\n' \
-    | grep -vE 'python3\.10/.*/torch(_tensorrt)?/lib' | paste -sd: -)
+    | grep -vE "python3\.10/.*/torch(_tensorrt)?/lib" | paste -sd: -)
 
     export LD_LIBRARY_PATH="${LD_NEW}${LD_OLD_FILTERED:+:$LD_OLD_FILTERED}"
 
