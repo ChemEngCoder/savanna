@@ -19,10 +19,7 @@ boto3==1.37.34
 #arrow # 1.3.0, 1.2.3, 1.1.1, 0.15.5 
 #ring_flash_attn # NA
 pydantic==2.8.2
-<<<<<<< HEAD
 deepspeed==0.16.4
-=======
->>>>>>> cd224b5a350231dabb2b377390f4949ffd989e1b
 #transformer-engine==1.13.0 # NA
 
 # Git repositories
