@@ -7,5 +7,7 @@ print("LD_LIBRARY_PATH head:", os.environ.get("LD_LIBRARY_PATH","").split(":")[:
 
 import torch
 
+import lazy_import_plus
+
 print(torch.version.cuda)
 print(torch.__version__)
