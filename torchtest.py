@@ -9,3 +9,6 @@ import torch
 
 print(torch.version.cuda)
 print(torch.__version__)
+
+import lazy_import_plus
+print(lazy_import_plus.__version__)
