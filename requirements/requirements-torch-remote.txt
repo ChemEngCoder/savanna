@@ -1,11 +1,5 @@
 PyYAML
-<<<<<<< HEAD
 lazy_import_plus
-=======
-#causal-conv1d
-deepspeed
-#lazy_import_plus
->>>>>>> cd224b5a350231dabb2b377390f4949ffd989e1b
 arrow
 ring_flash_attn
 #transformer-engine==1.13.0
