@@ -72,7 +72,6 @@ from savanna.utils import (
     mask_control_tags,
     print_straggler_report,
     reduce_losses,
-    reduce_losses_break_graphs,
 )
 
 logger = logging.getLogger(__name__)
@@ -83,17 +82,7 @@ straggler = None
 real_empty_cache = torch.cuda.empty_cache
 torch.cuda.empty_cache = lambda: None
 RealEvent = torch.cuda.Event
-# Turn CUDAGraphs off 
-#torch._inductor.config.cuda.use_cuda_graphs = False
-torch._inductor.config.triton.cudagraphs = False
-torch._inductor.config.triton.cudagraph_skip_dynamic_graphs = True
 
-# Sanity check
-import pprint
-print(torch.__version__)
-pprint.pp(dir(torch._inductor.config))
-pprint.pp(dir(torch._inductor.config.triton))
-print("triton.cudagraphs =", torch._inductor.config.triton.cudagraphs)
 
 class RecycleableEvent:
     events = set()
@@ -960,7 +949,7 @@ def forward_step(data_iterator, model, global_config, timers, return_logits=Fals
 
     if timers is not None:
         timers("batch generator").stop()
-    print("FORWARD STEP")
+
     with hsd_timer:
         outputs = model((tokens, position_ids, attention_mask), global_config=global_config)
    
@@ -1348,8 +1337,7 @@ def setup_model_and_optimizer(global_config, use_cache=False, iteration=None):
         )
         model.total_params = get_total_params(model.module)
         print_rank_0(f' > total params: {"{:,}".format(model.total_params)}')
-        # Forward-only compile
-        model = torch.compile(model)
+
         mark_norms_for_sequence_parallel_grad_sync(model, global_config)
 
         if global_config.is_pipe_parallel:
@@ -1399,10 +1387,10 @@ def setup_model_and_optimizer(global_config, use_cache=False, iteration=None):
 
     return model, optimizer, lr_scheduler
 
-@torch.compiler.disable
+
 def backward_step(global_config, timers, optimizer, model, loss):
     """Backward step."""
-    print("BACKWARD STEP")
+
     # Backward pass.
     timers("backward-backward").start()
     if global_config.deepspeed:
@@ -1418,14 +1406,6 @@ def backward_step(global_config, timers, optimizer, model, loss):
     else:
         raise ValueError("Must be using deepspeed to run neox")
 
-def _mark_step():
-    if hasattr(torch.compiler, "cudagraph_mark_step_begin"):
-        print("Mark Step Begin")
-        torch.compiler.cudagraph_mark_step_begin()
-
-@torch.compiler.disable
-def optimizer_step(model):
-    model.step()
 
 def train_step(
     global_config,
@@ -1454,9 +1434,6 @@ def train_step(
         for _ in range(global_config.gradient_accumulation_steps):
             # Forward model for one step.
             
-            # Temporarily disabling Cuda-Graphs
-            _mark_step()
-            
             if straggler is not None:
                 straggler_ctx = straggler.Detector.detection_section("TRAIN_STEP_FORWARD", profile_cuda=True)
                 # print("Entering straggler.Detector context: TRAIN_STEP_FORWARD")
@@ -1478,10 +1455,7 @@ def train_step(
 
             timers("forward").stop()
 
-            #Approach 0:
-            #losses.append(loss)
-        
-
+            losses.append(loss)
 
             if straggler is not None:
                 straggler_ctx.__exit__(None, None, None)
@@ -1492,10 +1466,7 @@ def train_step(
                 straggler_ctx = straggler.Detector.detection_section("TRAIN_STEP_BACKWARD", profile_cuda=True)
                 # print("Entering straggler.Detector context: TRAIN_STEP_FORWARD")
                 straggler_ctx.__enter__()
-            
-            # Temporarily disabling Cuda-Graphs
-            _mark_step()
-
+                
             timers("backward").start()
             with profiler.mark("TRAIN_STEP_BACKWARD"):
                 backward_step(
@@ -1506,14 +1477,6 @@ def train_step(
                     loss=loss,
                 )
             
-            #Approach 3: Move losses.append(loss)
-            #losses.append(loss)
-        
-            # Approach 1.5: After backward (do NOT store the graphed tensor itself):
-            #losses.append(float(loss.detach()))
-            losses.append(float(loss.detach().float()))
-            del loss   # drop the reference
-
             if straggler is not None:
                 straggler_ctx.__exit__(None, None, None)
 
@@ -1528,13 +1491,10 @@ def train_step(
                 # print("Entering straggler.Detector context: TRAIN_STEP_FORWARD")
                 straggler_ctx.__enter__()
 
-            # Temporarily disabling Cuda-Graphs
-            _mark_step()
-
             timers("optimizer").start()
             with profiler.mark("TRAIN_STEP_OPTIMIZER_STEP"):
                 if global_config.deepspeed:
-                    optimizer_step(model)
+                    model.step()
                 else:
                     raise ValueError("Must be using deepspeed to run savanna")
             timers("optimizer").stop()
@@ -1542,14 +1502,9 @@ def train_step(
             if straggler is not None:
                 straggler_ctx.__exit__(None, None, None)
 
-        #reduced_loss = {
-        #    "lm_loss": reduce_losses(losses).mean(),
-        #}  # reduces losses across machines for logging
-
-        # Approach 2: Updated reduce_losses:
-        # After the micro-steps:
-        reduced_loss_vec = reduce_losses_break_graphs(losses)  # 1D tensor length = grad_accum_steps
-        reduced_loss = {"lm_loss": reduced_loss_vec.mean()}  # or keep the vector if you log each
+        reduced_loss = {
+            "lm_loss": reduce_losses(losses).mean(),
+        }  # reduces losses across machines for logging
 
     if global_config.precision == "fp16" and model.optimizer.overflow:
         skipped_iter = 1
@@ -1686,10 +1641,7 @@ def train(
     if global_config.disable_gc:
         print(f"rank{torch.distributed.get_rank()}: Disabling automatic gc, collection generation {global_config.gc_collect_generation}")
         gc.disable()
-
-    # Re-import torch before training steps:
-    #import torch
-
+        
     while iteration < global_config.train_iters:
         
         if global_config.disable_gc:
@@ -1705,7 +1657,7 @@ def train(
             enable_deepspeed_comms_logging()
             if torch.distributed.get_rank() == 0:
                 print(f"Comms logging enabled at iteration {iteration}")
-    
+
         loss_dict, skipped_iter = train_step(
             global_config=global_config,
             timers=timers,
