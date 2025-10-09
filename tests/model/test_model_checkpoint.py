@@ -31,7 +31,10 @@ os.environ['MASTER_ADDR'] = 'localhost'
 os.environ['MASTER_PORT'] = '6040'
 os.environ['LOCAL_RANK'] = '0'
 torch.distributed.init_process_group(backend='nccl', rank=0, world_size=1)
-initialize_model_parallel(1)
+initialize_model_parallel(model_parallel_size=1, 
+                          pipe_parallel_size=0, 
+                          context_parallel_size=0, 
+                          data_parallel_size=0)
 deepspeed.comm.init_distributed(dist_backend='nccl', rank=0, world_size=1)
 
 
