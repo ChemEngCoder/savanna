@@ -1365,7 +1365,8 @@ def setup_model_and_optimizer(global_config, use_cache=False, iteration=None):
     # jeromeku: We need to take into account the case where load is provided right at start of training
     # That is, we would like to provide the same save and load dir such that the same model config can be submitted 
     # to SLURM job again for job queuing and fault tolerance tools such as NVIDIA Heimdall.
-    should_load = global_config.load is not None and iteration is not None and (iteration > 0 or global_config.warmstart)
+    print_rank_0(f"ITERATION: {iteration}")
+    should_load = global_config.load is not None and (iteration > 0 or global_config.warmstart)
     
     if should_load:
         global_config.iteration = load_checkpoint(
