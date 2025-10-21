@@ -254,7 +254,13 @@ def model_setup(yaml_list=None, param_dict=None, clear_data=True):
     args_loaded.build_tokenizer()
 
     initialize_megatron(global_config=args_loaded)
-    model, optimizer, lr_scheduler = setup_model_and_optimizer(global_config=args_loaded, use_cache=True)
+
+    if args_loaded.load is None:
+        load_iteration = 0
+    else:
+        load_iteration = args_loaded.iteration
+
+    model, optimizer, lr_scheduler = setup_model_and_optimizer(global_config=args_loaded, use_cache=True, iteration=load_iteration)
     return model, optimizer, lr_scheduler, args_loaded
 
 
