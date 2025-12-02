@@ -61,7 +61,7 @@
     "stage": 0,
     "allgather_partitions": True,
     "reduce_scatter": True,
-    "allgather_bucket_size": 500000000,,
+    "allgather_bucket_size": 500000000,
     "overlap_comm": False,
     "reduce_scatter": True,
     "reduce_bucket_size": 500000000,
