@@ -55,6 +55,8 @@
        "eps": 1.0e-8,
      }
    },
+  "no_load_optim": True,
+  "zero_optimization": None,  # disable zero optimization (won't be used in inference, and loading zero optimizer can cause errors)
     
   "train-iters": 15,
   "eval-interval": 1,
