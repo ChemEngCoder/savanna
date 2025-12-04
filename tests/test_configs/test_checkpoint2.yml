@@ -56,17 +56,15 @@
      }
    },
   "no_load_optim": True,
-  #"zero_optimization": None,  # disable zero optimization (won't be used in inference, and loading zero optimizer can cause errors)
-  "zero_optimization": {
+   "zero_optimization": {
     "stage": 0,
     "allgather_partitions": True,
-    "reduce_scatter": True,
     "allgather_bucket_size": 500000000,
-    "overlap_comm": False,
+    "overlap_comm": True,
     "reduce_scatter": True,
     "reduce_bucket_size": 500000000,
-    "contiguous_gradients": False,
- },
+    "contiguous_gradients": True,
+  },
 
   "train-iters": 15,
   "eval-interval": 1,
