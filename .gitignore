@@ -17,6 +17,11 @@ logs/
 /logs/
 /logs
 
+# Containers
+containers/
+/containers/
+/containers
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
