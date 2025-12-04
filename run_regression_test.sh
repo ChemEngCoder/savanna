@@ -105,4 +105,4 @@ export CONFIG_2="${CONFIG_2}"
 export CONFIG_3="${CONFIG_3}"
 export CHECKPOINT_RELOAD_TEST="${CHECKPOINT_RELOAD_TEST}"
 
-sbatch slurm.regression.sh
+sbatch slurm.regression_at.sh
