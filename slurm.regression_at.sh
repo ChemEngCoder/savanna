@@ -34,11 +34,11 @@ export CUDNN_PATH="$(dirname "$EBROOTCUDNN")/9.5.1.17"
 export SCRATCH="${SCRATCH:-../}"
 
 # Location of your Savanna repo inside SCRATCH
-export SAVANNA_DIR="$SCRATCH/savanna"
+export SAVANNA_DIR="${SAVANNA_DIR:-$PWD}"
 
 # Apptainer image + venv inside the image
-IMAGE="pytorch_24.09-py3.13-mpi.sif"
-CONTAINER_VENV="environments/venv_cuda12.6_at/bin/activate"
+IMAGE="containers/pytorch_24.09-py3.13-mpi.sif"
+CONTAINER_VENV="venv/bin/activate"
 
 echo "Host:            $(hostname)"
 echo "SCRATCH:         $SCRATCH"
@@ -55,7 +55,6 @@ echo "DATA_CONFIG:     ${DATA_CONFIG:-<unset>}"
 echo "CHECKPOINT_RELOAD_TEST: ${CHECKPOINT_RELOAD_TEST:-<unset>}"
 echo "CUDNN_PATH:      ${CUDNN_PATH:-<unset>}"
 echo "MASTER_PORT:     ${MASTER_PORT:-<unset>}"
-echo
 
 # ------------------------------
 # Helper: run a single regression inside the container
@@ -80,12 +79,11 @@ run_in_container() {
       --output="$out_file" \
       --error="$err_file" \
       apptainer exec --nv \
-        --bind "$SCRATCH:$SCRATCH" \
+        --bind "$SAVANNA_DIR:$SAVANNA_DIR" \
         "$IMAGE" \
         bash -lc "
           set -euo pipefail
           . \"$CONTAINER_VENV\"
-          cd \"$SAVANNA_DIR\"
           export TORCH_COMPILE_DISABLE=1
           python launch.py train.py \"$DATA_CONFIG\" \"$cfg_path\"
         "
