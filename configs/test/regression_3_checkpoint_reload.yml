@@ -1,6 +1,6 @@
 {
   "pipe_parallel_size": 0,
-  "model_parallel_size": 4,
+  "model_parallel_size": 1,
   "make_vocab_size_divisible_by": 8,
   "num_layers": 24,
   "hidden_size": 1024,
