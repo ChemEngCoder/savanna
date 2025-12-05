@@ -37,7 +37,7 @@ export SCRATCH="${SCRATCH:-../}"
 export SAVANNA_DIR="${SAVANNA_DIR:-$PWD}"
 
 # Apptainer image + venv inside the image
-IMAGE="containers/pytorch_24.09-py3.13-mpi.sif"
+IMAGE="containers/pytorch_24.09-py3.12-mpi.sif"
 CONTAINER_VENV="venv/bin/activate"
 
 echo "Host:            $(hostname)"
