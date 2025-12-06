@@ -91,7 +91,7 @@ SAVE_PATH_3="${CHECKPOINT_DIR}/regression_3_checkpoint_reload"
 update_config "$CONFIG_1" "$SAVE_PATH_1" "$TRAIN_ITERS_1" "$LOG_DIR_1"
 update_config "$CONFIG_2" "$SAVE_PATH_2" "$TRAIN_ITERS_2" "$LOG_DIR_2"
 if $CHECKPOINT_RELOAD_TEST; then
-	update_config "$CONFIG_3" "$SAVE_PATH_3" "$TRAIN_ITERS_3" "$LOG_DIR_3" "$SAVE_PATH_2"
+	update_config "$CONFIG_3" "$SAVE_PATH_3" "$TRAIN_ITERS_3" "$LOG_DIR_3" "$SAVE_PATH_1"
 fi
 
 echo "Logging to $LOG_DIR"
