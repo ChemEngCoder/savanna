@@ -112,7 +112,7 @@
    "to_upper": "weighted",
    "lowercase_loss_reweighting": 0.1,
 
-   "iteration": 25,
+   "iteration": 2000,
    "load": "/../scratch/logs/regression/checkpoints/regression/regression_1",
    "use_checkpoint_lr_scheduler": True,
 }
