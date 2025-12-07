@@ -318,9 +318,9 @@ def update_data_loading_config(global_config):
     ckpt_dir = f"{global_config.load}/{tag}"
     # Rank 0 model states should always be saved.
     if global_config.zero_optimization["stage"] > 1:
-        state_dict = torch.load(f"{ckpt_dir}/zero_pp_rank_0_mp_rank_00_model_states.pt", map_location=torch.device("cpu"))
+        state_dict = torch.load(f"{ckpt_dir}/zero_pp_rank_0_mp_rank_00_model_states.pt", map_location=torch.device("cpu"), weights_only=False)
     else:
-        state_dict = torch.load(f"{ckpt_dir}/mp_rank_00_model_states.pt", map_location=torch.device("cpu"))
+        state_dict = torch.load(f"{ckpt_dir}/mp_rank_00_model_states.pt", map_location=torch.device("cpu"), weights_only=False)
 
     # Set previous data loading values.
     if "data_loading" in state_dict:
