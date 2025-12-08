@@ -11,5 +11,5 @@ bash -lc "
     set -euo pipefail
     . \"$CONTAINER_VENV\"
     export TORCH_COMPILE_DISABLE=1
-    ./setup_run.sh
+    ./setup_run_reload.sh
 "
